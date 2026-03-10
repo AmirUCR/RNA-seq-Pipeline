@@ -1,0 +1,44 @@
+name: ngs
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - fastqc
+  - fastq-screen
+  - bowtie2
+  - multiqc
+  - picard
+  - ucsc-bedgraphtobigwig
+  - trimmomatic
+  - hisat2
+  - samtools
+  - igvtools
+  - bedtools
+  - cutadapt
+  - fastp
+  - seqtk
+  - bedops
+  - bwa
+  - subread
+  - gffread
+  - salmon
+  - gprofiler-official
+  - pandas
+  - nextflow
+  - requests
+  - goatools
+  
+  ## CRAN packages
+  - r-base
+  - r-tidyverse
+  - r-gplots
+  - r-ggplot2
+  - r-gprofiler2
+  
+  ## Bioconductor packages
+  - bioconductor-deseq2
+  - bioconductor-tximport
+  - bioconductor-edger
+  - bioconductor-biomart
+  
