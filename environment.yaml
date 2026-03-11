@@ -1,4 +1,4 @@
-name: ngs
+name: rnaseq
 channels:
   - conda-forge
   - bioconda

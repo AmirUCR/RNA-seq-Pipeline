@@ -1,0 +1,5 @@
+sample_id	condition	r1	r2
+WT_rep1	WT	flowcell705_lane1_pair1_CCTTCCAT.RITA9-w31.fastq.gz	flowcell705_lane1_pair2_CCTTCCAT.RITA9-w31.fastq.gz
+WT_rep2	WT	flowcell888_lane1_pair1_TATGGCAC.RITA-WTA0.fastq.gz	flowcell888_lane1_pair2_TATGGCAC.RITA-WTA0.fastq.gz
+SMC4KD_rep1	SMC4KD	flowcell705_lane1_pair1_AGACCTTG.RITA7-431.fastq.gz	flowcell705_lane1_pair2_AGACCTTG.RITA7-431.fastq.gz
+SMC4KD_rep2	SMC4KD	flowcell705_lane1_pair1_CTGTACCA.RITA6-423.fastq.gz	flowcell705_lane1_pair2_CTGTACCA.RITA6-423.fastq.gz
