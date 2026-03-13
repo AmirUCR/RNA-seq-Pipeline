@@ -10,13 +10,13 @@
 
 readonly WORKFLOW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="$(cd "${WORKFLOW_DIR}/.." && pwd)"
+readonly BOWTIE2_PATH="$(command -v bowtie2)"
 
 readonly DIR="${PROJECT_DIR}/example_data"
 
 readonly THREADS=30
 readonly ENV="rnaseq"
 readonly DATASET="PlasmoDB-36_PbergheiANKA"
-readonly RNA_STRAND="RF"
 
 readonly READS_DIR="${DIR}/reads"
 readonly READS="${READS_DIR}/untrimmed"
@@ -25,6 +25,11 @@ readonly READS_TRIM="${READS_DIR}/trimmed"
 readonly OUT_DIR="${DIR}/output"
 readonly OUT="${OUT_DIR}/untrimmed"
 readonly OUT_TRIM="${OUT_DIR}/trimmed"
+readonly CONTAM_OUT="${OUT_DIR}/contamination"
+readonly FASTQ_SCREEN_CONFIG="${CONTAM_OUT}/fastq_screen.conf"
+readonly STRAND_DIR="${OUT_TRIM}/strand"
+readonly IGV_GENOME_ZIP="${OUT_DIR}/${DATASET}.zip"
+readonly IGV_BW_ZIP="${OUT_DIR}/trimmed_aligned_bigwig.zip"
 
 readonly GENOMIC="${DIR}/genomic"
 readonly REF="${GENOMIC}/${DATASET}_Genome.fasta"
@@ -38,3 +43,4 @@ readonly HISAT2_IDX="${IDX_DIR}/${DATASET}_index"
 
 readonly ADAPT="${READS_DIR}/illumina_adapters.fasta"
 readonly SAMPLES_TSV="${PROJECT_DIR}/config/samples.tsv"
+readonly BACKGROUND_TSV="${PROJECT_DIR}/config/background.tsv"

@@ -1,21 +1,32 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Tell bash where to find conda
-source ~/miniconda3/etc/profile.d/conda.sh
-conda activate ngs
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "0_vars.sh"
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
+
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
+
+log "> 14_featurecounts.sh"
+
+mkdir -p "${OUT_TRIM}"
 
 # Build BAMS from the sample list
 BAMS=() 
-for s in "${SAMPLES[@]}"; do
-    BAMS+=("${OUT_TRIM}/${s}/trimmed.dedup.bam")
-done
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+    BAMS+=("${OUT_TRIM}/${sample_id}/trimmed.dedup.bam")
+done < <(tail -n +2 "${SAMPLES_TSV}")
 
-ALL_OTHER_PARAMETERS=(
+infer_featurecounts_strand
+log "Detected featureCounts strandedness: ${FEATURE_COUNTS_STRANDEDNESS}"
+
+FEATURECOUNTS_ARGS=(
     -T "${THREADS}"
-    -s 2  # Reversely stranded
+    -s "${FEATURE_COUNTS_STRANDEDNESS}"  # Reversely stranded?
     -p
     -B -C -Q 30
     --countReadPairs
@@ -23,7 +34,7 @@ ALL_OTHER_PARAMETERS=(
 
 # One featureCounts run for all BAMs
 featureCounts \
-    "${ALL_OTHER_PARAMETERS[@]}" \
+    "${FEATURECOUNTS_ARGS[@]}" \
     -a "${GTF}" \
     -o "${OUT_TRIM}/counts.txt" \
     "${BAMS[@]}"

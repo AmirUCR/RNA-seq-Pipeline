@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# —— Conda
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
-conda activate ngs
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "0_vars.sh"
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
+
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
+
+log "> 10_dedup.sh"
 
 dedup() {
   local tag=$1
@@ -22,9 +28,9 @@ dedup() {
 }
 
 # —— Run
-for s in "${SAMPLES[@]}"; do
-  dedup "${OUT_TRIM}/${s}/trimmed"
-done
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+  dedup "${OUT_TRIM}/${sample_id}/trimmed"
+done < <(tail -n +2 "${SAMPLES_TSV}")
 
 dedup_counts() {
   local tag="$1"
@@ -59,7 +65,7 @@ dedup_counts() {
 
   # Optionally append duplication rate from Picard metrics if present
   if [[ -f "${tag}.dup_metrics.txt" ]]; then
-    dup_rate=$(awk -F'\t' '
+    local dup_rate=$(awk -F'\t' '
       BEGIN{col=-1}
       /^#/ {next}
       $1=="LIBRARY" {for(i=1;i<=NF;i++){if($i=="PERCENT_DUPLICATION"){col=i}}; next}
@@ -71,6 +77,6 @@ dedup_counts() {
   echo "Wrote ${out}"
 }
  
-for s in "${SAMPLES[@]}"; do
-  dedup_counts "${OUT_TRIM}/${s}/trimmed"
-done
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+  dedup_counts "${OUT_TRIM}/${sample_id}/trimmed"
+done < <(tail -n +2 "${SAMPLES_TSV}")

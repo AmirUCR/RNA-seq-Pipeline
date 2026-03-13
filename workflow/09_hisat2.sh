@@ -1,20 +1,32 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# —— Conda
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
-conda activate ngs
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "0_vars.sh"
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
+
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
+
+log "> 09_hisat2.sh"
 
 # Create directory
-for (( i = 0; i < NUM_SAMPLES; i++ )); do
-    mkdir -p "${OUT_TRIM}/${SAMPLES[i]}"
-done
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+    mkdir -p "${OUT_TRIM}/${sample_id}"
+done < <(tail -n +2 "${SAMPLES_TSV}")
+
+infer_hisat2_strand
+log "Detected hisat2 strandedness: ${HISAT2_STRANDEDNESS}"
 
 align() {
-  local idx_prefix=$1 r1=$2 r2=$3 tag=$4
-
+  local idx_prefix="$1"
+  local r1="$2"
+  local r2="$3"
+  local tag="$4"
+  
   # derive RG fields from tag (…/SAMPLE/trimmed)
   local RGID; RGID="$(basename "${tag}")"
   local RGSM; RGSM="$(basename "$(dirname "${tag}")")"
@@ -23,7 +35,7 @@ align() {
   local RGPU="${RGSM}.unit1"
 
   # Align -> sort BAM (with @RG)
-  hisat2 -p "${THREADS}" --rna-strandness "${RNA_STRAND}" \
+  hisat2 -p "${THREADS}" --rna-strandness "${HISAT2_STRANDEDNESS}" \
     -x "${idx_prefix}" -1 "${r1}" -2 "${r2}" \
     --rg-id "${RGID}" \
     --rg "SM:${RGSM}" --rg "LB:${RGLB}" --rg "PL:${RGPL}" --rg "PU:${RGPU}" \
@@ -36,6 +48,10 @@ align() {
 }
 
 # —— Run
-for (( i = 0; i < NUM_SAMPLES; i++ )); do
-  align "${HISAT2_IDX}" "${READS_TRIM}/${SAMPLES_R1[i]}" "${READS_TRIM}/${SAMPLES_R2[i]}" "${OUT_TRIM}/${SAMPLES[i]}/trimmed"
-done
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+  align \
+    "${HISAT2_IDX}" \
+    "${READS_TRIM}/${sample_id}_R1.fastq.gz" \
+    "${READS_TRIM}/${sample_id}_R2.fastq.gz" \
+    "${OUT_TRIM}/${sample_id}/trimmed"
+done < <(tail -n +2 "${SAMPLES_TSV}")

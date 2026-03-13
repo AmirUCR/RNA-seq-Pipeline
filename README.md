@@ -1,5 +1,4 @@
 # RNA-seq Analysis Pipeline
-=========================
 
 End-to-end bulk RNA-seq analysis workflow used for *Plasmodium berghei* – WT vs SMC4 knockdown
 transcriptomics experiments. Public data obtained from [Tewari, R., et al. Cell Rep., 2020

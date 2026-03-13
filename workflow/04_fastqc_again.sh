@@ -1,38 +1,37 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Tell bash where to find conda
-source ~/miniconda3/etc/profile.d/conda.sh
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Make sure env exists
-conda activate ngs
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
 
-source "0_vars.sh"
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
 
-# Create directory
-for (( i = 0; i < NUM_SAMPLES; i++ )); do
-    mkdir -p "${OUT_TRIM}/${SAMPLES[i]}"
-done
+log "> 04_fastqc_again.sh"
 
-# ------- FASTQC
-# Uncomment and run these instead to run in parallel
-for (( i = 0; i < NUM_SAMPLES; i++ )); do
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+    log "Creating directory for ${sample_id}"
+    mkdir -p "${OUT_TRIM}/${sample_id}"
+done < <(tail -n +2 "${SAMPLES_TSV}")
+
+# ------- FASTQC & multiqc
+while IFS=$'\t' read -r sample_id condition r1 r2; do
+    log "Running FastQC for ${sample_id}"
     fastqc \
-    "${READS_TRIM}"/"${SAMPLES_R1[i]}" \
-    "${READS_TRIM}"/"${SAMPLES_R2[i]}" \
-    -o "${OUT_TRIM}"/"${SAMPLES[i]}" \
-    --threads "${THREADS}" &
-done
+    "${READS_TRIM}"/"${sample_id}_R1.fastq.gz" \
+    "${READS_TRIM}"/"${sample_id}_R2.fastq.gz" \
+    -o "${OUT_TRIM}"/"${sample_id}" \
+    --threads "${THREADS}"
+done < <(tail -n +2 "${SAMPLES_TSV}")
 
-# Wait for all FastQC jobs to complete
-wait
-
-# ------- MULTIQC
-for (( i = 0; i < NUM_SAMPLES; i++ )); do
-    multiqc \
-    "${OUT_TRIM}"/"${SAMPLES[i]}" \
-    -o "${OUT_TRIM}"/"${SAMPLES[i]}" \
-    -f --clean-up &
-done
-
-wait
+log "Running multiqc"
+multiqc \
+    "${OUT_TRIM}" \
+    -o "${OUT_TRIM}" \
+    -f \
+    --clean-up
+    

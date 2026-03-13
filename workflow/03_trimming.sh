@@ -5,12 +5,13 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Load workflow configuration.
 source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
 
-# Load conda.
+# Load conda and activate env.
 source "${HOME}/miniconda3/etc/profile.d/conda.sh"
-
-# Activate environment.
 conda activate "${ENV}"
+
+log "> 03_trimming.sh"
 
 # Create output directory.
 mkdir -p "${READS_TRIM}"
@@ -32,7 +33,7 @@ ALL_OTHER_PARAMETERS=(
 )
 
 while IFS=$'\t' read -r sample_id condition r1 r2; do
-  echo "Running fastp for ${sample_id}"
+  log "Running fastp for ${sample_id}"
 
   fastp \
     -i "${READS}/${r1}" \

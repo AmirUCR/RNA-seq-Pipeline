@@ -1,18 +1,30 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# —— Conda
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
-conda activate ngs
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "0_vars.sh"
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
 
-mkdir -p ${BOWTIE2_IDX}/pberghei
-mkdir -p ${BOWTIE2_IDX}/hst2t
-mkdir -p ${BOWTIE2_IDX}/phix
-mkdir -p ${BOWTIE2_IDX}/mmusculus
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
 
-# bowtie2-build "${GENOMIC}/human/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna.gz" ${BOWTIE2_IDX}/hst2t/hst2t --threads "${THREADS}"
-bowtie2-build "${GENOMIC}/mmusculus/GCF_000001635.27_GRCm39_genomic.fna.gz" ${BOWTIE2_IDX}/mmusculus/mmusculus --threads "${THREADS}"
-# bowtie2-build "${GENOMIC}/phix/genome.fa" ${BOWTIE2_IDX}/phix/phix --threads "${THREADS}"
-# bowtie2-build "${REF}" ${BOWTIE2_IDX}/pberghei/pberghei --threads "${THREADS}"
+log "> 06_bowtie2_index.sh"
+
+while IFS=$'\t' read -r shorthand path_in_genomic; do
+    log "Creating directory for ${shorthand}"
+    mkdir -p "${BOWTIE2_IDX}/${shorthand}"
+
+    log "Running bowtie-build for ${shorthand}"
+    if [[ ! -f "${GENOMIC}/${path_in_genomic}" ]]; then
+        log "Missing genomic file: ${GENOMIC}/${path_in_genomic}" >&2
+        exit 1
+    fi
+
+    bowtie2-build \
+        "${GENOMIC}/${path_in_genomic}" \
+        "${BOWTIE2_IDX}/${shorthand}/${shorthand}" \
+        --threads "${THREADS}"
+done < <(tail -n +2 "${BACKGROUND_TSV}")

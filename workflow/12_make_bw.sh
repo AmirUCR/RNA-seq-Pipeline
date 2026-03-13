@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# —— Conda
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
-conda activate ngs
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "0_vars.sh"
+# Load workflow configuration.
+source "${SCRIPT_DIR}/00_vars.sh"
+source "${SCRIPT_DIR}/01_common.sh"
 
-# —— Coverage tracks (dedup + raw), with proper RNA-seq handling
+# Load conda.
+source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate "${ENV}"
+
+log "> 12_make_bw.sh"
+
+# Coverage tracks (dedup + raw)
 make_bw () {
-  local bam=$1 bed=$2 bw=$3
+  local bam=$1
+  local bed=$2
+  local bw=$3
+
   # keep mapped, primary, non-supplementary; drop low MAPQ; honor splicing
   samtools view -b -F 2308 -q 10 "${bam}" \
   | bedtools genomecov -bg -split -ibam - \
@@ -18,14 +27,14 @@ make_bw () {
   bedGraphToBigWig "${bed}" "${CHROMSIZES}" "${bw}"
 }
 
-for s in "${SAMPLES[@]}"; do
+while IFS=$'\t' read -r sample_id condition r1 r2; do
   make_bw \
-    "${OUT_TRIM}/${s}/trimmed.dedup.bam" \
-    "${OUT_TRIM}/${s}/trimmed.dedup.bedgraph" \
-    "${OUT_TRIM}/${s}/trimmed.dedup.bw"
+    "${OUT_TRIM}/${sample_id}/trimmed.dedup.bam" \
+    "${OUT_TRIM}/${sample_id}/trimmed.dedup.bedgraph" \
+    "${OUT_TRIM}/${sample_id}/trimmed.dedup.bw"
 
   make_bw \
-    "${OUT_TRIM}/${s}/trimmed.sorted.bam" \
-    "${OUT_TRIM}/${s}/trimmed.sorted.bedgraph" \
-    "${OUT_TRIM}/${s}/trimmed.sorted.bw"
-done
+    "${OUT_TRIM}/${sample_id}/trimmed.sorted.bam" \
+    "${OUT_TRIM}/${sample_id}/trimmed.sorted.bedgraph" \
+    "${OUT_TRIM}/${sample_id}/trimmed.sorted.bw"
+done < <(tail -n +2 "${SAMPLES_TSV}")
