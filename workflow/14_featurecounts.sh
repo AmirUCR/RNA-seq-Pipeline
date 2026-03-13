@@ -4,7 +4,6 @@ set -Eeuo pipefail
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Load workflow configuration.
-source "${SCRIPT_DIR}/00_vars.sh"
 source "${SCRIPT_DIR}/01_common.sh"
 
 # Load conda.

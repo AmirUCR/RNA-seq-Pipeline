@@ -14,7 +14,7 @@ readonly BOWTIE2_PATH="$(command -v bowtie2)"
 
 readonly DIR="${PROJECT_DIR}/example_data"
 
-readonly THREADS=30
+readonly THREADS=64
 readonly ENV="rnaseq"
 readonly DATASET="PlasmoDB-36_PbergheiANKA"
 

@@ -1,1 +1,8 @@
 *.fastq.gz
+output/
+reads/
+hisat2_index/
+bowtie2_index/
+human/
+mmusculus/
+phix/
