@@ -28,6 +28,7 @@ dependencies:
   - nextflow
   - requests
   - goatools
+  - matplotlib
   
   ## CRAN packages
   - r-base
