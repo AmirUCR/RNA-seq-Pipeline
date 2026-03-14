@@ -18,11 +18,11 @@ readonly THREADS=64
 readonly ENV="rnaseq"
 readonly DATASET="PlasmoDB-36_PbergheiANKA"
 
-readonly READS_DIR="${DIR}/reads"
+readonly READS_DIR="${EXAMPLE_DIR}/reads"
 readonly READS="${READS_DIR}/untrimmed"
 readonly READS_TRIM="${READS_DIR}/trimmed"
 
-readonly OUT_DIR="${DIR}/output"
+readonly OUT_DIR="${PROJECT_DIR}/results"
 readonly OUT="${OUT_DIR}/untrimmed"
 readonly OUT_TRIM="${OUT_DIR}/trimmed"
 readonly CONTAM_OUT="${OUT_DIR}/contamination"
@@ -31,7 +31,7 @@ readonly STRAND_DIR="${OUT_TRIM}/strand"
 readonly IGV_GENOME_ZIP="${OUT_DIR}/${DATASET}.zip"
 readonly IGV_BW_ZIP="${OUT_DIR}/trimmed_aligned_bigwig.zip"
 
-readonly GENOMIC="${DIR}/genomic"
+readonly GENOMIC="${EXAMPLE_DIR}/genomic"
 readonly REF="${GENOMIC}/${DATASET}_Genome.fasta"
 readonly GFF="${GENOMIC}/${DATASET}.gff"
 readonly GTF="${GENOMIC}/${DATASET}.gtf"
