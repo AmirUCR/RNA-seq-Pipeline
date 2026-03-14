@@ -1,5 +1,8 @@
 *.fastq.gz
-output/
+results/contamination/
+results/trimmed/
+results/untrimmed/
+results/*.zip
 reads/
 hisat2_index/
 bowtie2_index/
