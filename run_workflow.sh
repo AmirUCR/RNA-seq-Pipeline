@@ -18,3 +18,4 @@ Rscript workflow/15_parse_featurecounts.r
 Rscript workflow/16_deseq2.r
 Rscript workflow/17_edger.r
 Rscript workflow/18_create_heatmap_edger.r
+python 19_volcano.py
