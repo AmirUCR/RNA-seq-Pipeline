@@ -73,7 +73,7 @@ SMC4KD: SRR9041565 – SRR9041566
    ./download_background.sh
    ```
 
-## Run pipeline
+## Run the pipeline
 
 1. Create and activate environment
    ```
