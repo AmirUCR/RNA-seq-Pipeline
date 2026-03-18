@@ -73,6 +73,20 @@ SMC4KD: SRR9041565 – SRR9041566
 7. Differential expression (DESeq2 + edgeR)
 8. Visualization (heatmap, volcano plots)
 
+## Run pipeline
+
+1. Create and activate environment
+   ```
+   conda env create -f environment.yaml
+   conda activate rnaseq
+   ```
+2. Configure paths in: `workflow/00_vars.sh`
+3. Run workflow
+   ```
+   chmod +x ./run_workflow.sh
+   bash ./run_workflow.sh
+   ```
+
 ## Example Output
 
 ### Volcano plot
@@ -82,17 +96,3 @@ SMC4KD: SRR9041565 – SRR9041566
 ### Differential expression heatmap
 
 ![DE Heatmap](results/edger_heatmap.png)
-
-## Run pipeline
-
-1. Create and activate environment:
-   ```
-   conda env create -f environment.yaml
-   conda activate rnaseq
-   ```
-2. Configure paths in: `workflow/00_vars.sh`
-3. Run workflow:
-   ```
-   chmod +x ./run_workflow.sh
-   bash ./run_workflow.sh
-   ```
