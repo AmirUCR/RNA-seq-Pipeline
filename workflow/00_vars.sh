@@ -12,13 +12,13 @@ readonly WORKFLOW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="$(cd "${WORKFLOW_DIR}/.." && pwd)"
 readonly BOWTIE2_PATH="$(command -v bowtie2)"
 
-readonly DIR="${PROJECT_DIR}/example_data"
+readonly DATA_DIR="${PROJECT_DIR}/example_data"
 
 readonly THREADS=64
 readonly ENV="rnaseq"
 readonly DATASET="PlasmoDB-36_PbergheiANKA"
 
-readonly READS_DIR="${EXAMPLE_DIR}/reads"
+readonly READS_DIR="${DATA_DIR}/reads"
 readonly READS="${READS_DIR}/untrimmed"
 readonly READS_TRIM="${READS_DIR}/trimmed"
 
@@ -31,7 +31,7 @@ readonly STRAND_DIR="${OUT_TRIM}/strand"
 readonly IGV_GENOME_ZIP="${OUT_DIR}/${DATASET}.zip"
 readonly IGV_BW_ZIP="${OUT_DIR}/trimmed_aligned_bigwig.zip"
 
-readonly GENOMIC="${EXAMPLE_DIR}/genomic"
+readonly GENOMIC="${DATA_DIR}/genomic"
 readonly REF="${GENOMIC}/${DATASET}_Genome.fasta"
 readonly GFF="${GENOMIC}/${DATASET}.gff"
 readonly GTF="${GENOMIC}/${DATASET}.gtf"
