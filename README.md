@@ -4,11 +4,11 @@ End-to-end bulk RNA-seq analysis workflow used for *Plasmodium berghei* – WT v
 transcriptomics experiments. Public data obtained from [Tewari, R., et al. Cell Rep., 2020
 ](https://pmc.ncbi.nlm.nih.gov/articles/PMC7016506/)
 
-Reads must be downloaded from SRA PRJNA542367 and placed under reads/untrimmed/
+Reads must be downloaded from SRA PRJNA542367 and placed under reads/untrimmed/ – We do this in the section below.
 
 ## Downloading the data
 
-You need the following reads, or just use your own – Adjust `config/samples.tsv` and `config/background.tsv` for a custom analysis:
+You need the following reads, or just use your own – Adjust `config/samples.tsv` and `config/background.tsv` for a custom analysis
 ```
 WT: SRR9041561 – SRR9041562
 SMC4KD: SRR9041565 – SRR9041566
@@ -16,7 +16,7 @@ SMC4KD: SRR9041565 – SRR9041566
 
 1. First, download the SRA toolkit from https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit
 
-1. Download the SRA toolkit:
+1. Download the SRA toolkit
    ```
    wget --output-document sratoolkit.tar.gz https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz
    ```
@@ -26,19 +26,19 @@ SMC4KD: SRR9041565 – SRR9041566
    tar -xzf sratoolkit.3.4.0-ubuntu64.tar.gz
    ```
 
-1. Add the binaries to your PATH (adjust the file path for yourself):
+1. Add the binaries to your PATH (adjust the file path for yourself)
    ```
    echo 'export PATH=$PATH:$HOME/projects/research/NGS/sratoolkit.3.4.0-ubuntu64/bin' >> ~/.bashrc
    
    source ~/.bashrc
    ```
 
-1. Check that the system recognizes the new version:
+1. Check that the system recognizes the new version
    ```
    prefetch --version
    ```
 
-1. Configure the toolkit:
+1. Configure the toolkit
    ```
    vdb-config --interactive
    ```
@@ -48,7 +48,7 @@ SMC4KD: SRR9041565 – SRR9041566
    * Check the "Location of user-repository" to make sure it points to a directory where you have plenty of disk space (important for large RNA-seq datasets).
    * Press "S" to save and "X" to exit.
 
-1. Add exec priviliges to the download script and run it:
+1. Add exec priviliges to the download script and run it
    ```
    chmod +x ./download_sra.sh
 
