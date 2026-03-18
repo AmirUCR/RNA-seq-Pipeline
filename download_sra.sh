@@ -1,10 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
 # Usage: ./download_sra.sh accessions.txt
 # The accessions.txt file should have one SRR ID per line.
 
 ACCESSIONS_FILE=$1
-OUTPUT_PATH="example_data/reads/untrimmed"
+
+readonly ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly WORKFLOW_FROM_ROOT_DIR="$(cd "${ROOT_DIR}/workflow" && pwd)"
+source "${WORKFLOW_FROM_ROOT_DIR}/01_common.sh"
+
+SRA_OUTPUT_PATH="${DATA_DIR}/reads/untrimmed"
 
 if [[ -z "$ACCESSIONS_FILE" ]]; then
     echo "Error: No accession list provided."
@@ -13,7 +19,7 @@ if [[ -z "$ACCESSIONS_FILE" ]]; then
 fi
 
 # Create an output directory for FASTQs
-mkdir -p "${OUTPUT_PATH}"
+mkdir -p "${SRA_OUTPUT_PATH}"
 
 while IFS= read -r ACC || [[ -n "$ACC" ]]; do
     # Skip empty lines or comments
@@ -30,14 +36,14 @@ while IFS= read -r ACC || [[ -n "$ACC" ]]; do
     # 2. Extract to FASTQ (using 4 threads)
     # Using --split-3 to handle paired-end and single-end automatically
     echo "Extracting FASTQs..."
-    fasterq-dump --split-3 --threads 4 --outdir "${OUTPUT_PATH}" "$ACC"
+    fasterq-dump --split-3 --threads 4 --outdir "${SRA_OUTPUT_PATH}" "$ACC"
 
     # 3. Compress the resulting files
     echo "Compressing files..."
-    gzip "${OUTPUT_PATH}"/"$ACC"*.fastq
+    gzip "${SRA_OUTPUT_PATH}"/"$ACC"*.fastq
 
     echo "Done with $ACC"
 done < "$ACCESSIONS_FILE"
 
 echo "------------------------------------------------------"
-echo "Batch processing complete. Files are in ${OUTPUT_PATH}"
+echo "Batch processing complete. Files are in ${SRA_OUTPUT_PATH}"
