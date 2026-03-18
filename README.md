@@ -55,6 +55,13 @@ SMC4KD: SRR9041565 – SRR9041566
    ./download_sra.sh accessions.txt
    ```
 
+1. Download the background genomes for contamination analysis
+   ```
+   chmod +x ./download_background.sh
+
+   ./download_background.sh
+   ```
+
 ## Pipeline steps:
 
 1. Quality control (FastQC)
