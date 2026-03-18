@@ -4,7 +4,18 @@ End-to-end bulk RNA-seq analysis workflow used for *Plasmodium berghei* – WT v
 transcriptomics experiments. Public data obtained from [Tewari, R., et al. Cell Rep., 2020
 ](https://pmc.ncbi.nlm.nih.gov/articles/PMC7016506/)
 
-Reads must be downloaded from SRA PRJNA542367 and placed under reads/untrimmed/ – We do this in the section below.
+Reads must be downloaded from SRA PRJNA542367 and placed under `reads/untrimmed/` – We do this below.
+
+## Pipeline steps:
+
+1. Quality control (FastQC)
+2. Adapter and reads trimming (fastp)
+3. Contamination screening (FastQ Screen)
+4. Alignment (HISAT2)
+5. Deduplication (marking only)
+6. Feature counting (featureCounts)
+7. Differential expression (DESeq2 + edgeR)
+8. Visualization (heatmap, volcano plots)
 
 ## Downloading the data
 
@@ -61,17 +72,6 @@ SMC4KD: SRR9041565 – SRR9041566
 
    ./download_background.sh
    ```
-
-## Pipeline steps:
-
-1. Quality control (FastQC)
-2. Adapter and reads trimming (fastp)
-3. Contamination screening (FastQ Screen)
-4. Alignment (HISAT2)
-5. Deduplication (marking only)
-6. Feature counting (featureCounts)
-7. Differential expression (DESeq2 + edgeR)
-8. Visualization (heatmap, volcano plots)
 
 ## Run pipeline
 
