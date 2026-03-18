@@ -1,5 +1,5 @@
 shorthand	path_in_genomic
 pberghei	PlasmoDB-36_PbergheiANKA_Genome.fasta
 hst2t	human/GCF_009914755.1_T2T-CHM13v2.0_genomic.fna.gz
-phix	phix/genome.fa
+phix	phix/GCF_000819615.1_ViralProj14015_genomic.fna.gz
 mmusculus	mmusculus/GCF_000001635.27_GRCm39_genomic.fna.gz
