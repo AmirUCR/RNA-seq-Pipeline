@@ -87,6 +87,22 @@ SMC4KD: SRR9041565 – SRR9041566
    bash ./run_workflow.sh
    ```
 
+If you are using your own data, it is important to run the scripts one by one:
+```
+chmod +x ./workflow/02_fastqc.sh
+./workflow/02_fastqc.sh
+```
+Then, check `results/untrimmed/multiqc_report.html` to see if you need to trim the ends of the reads, and by how much. Once you determine this, open `workflow/03_trimming.sh` and edit
+```
+fastp \
+...
+--trim_tail1 1 \
+--trim_tail2 1 \
+--trim_front1 11 \
+--trim_front2 11 \
+```
+to trim off your read ends however you see fit.
+
 ## Example Output
 
 ### Volcano plot
