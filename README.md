@@ -75,7 +75,7 @@ SMC4KD: SRR9041565 – SRR9041566
 
 ## Run the pipeline
 
-1. Create and activate environment
+1. Create and activate the `rnaseq` environment
    ```
    conda env create -f environment.yaml
    conda activate rnaseq
