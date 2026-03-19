@@ -8,9 +8,8 @@ plt.rcParams['figure.dpi'] = 600
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = SCRIPT_DIR.parent
 
-DATA_DIR = PROJECT_DIR / "example_data"
-OUT_DIR = DATA_DIR / "output"
-TRIMED_DIR = OUT_DIR / "trimmed"
+RESULTS_DIR = PROJECT_DIR / "results"
+TRIMED_DIR = RESULTS_DIR / "trimmed"
 CONFIG_DIR = PROJECT_DIR / "config"
 
 LFC_THR    = 1        # draw horizontal lines at ± this log2FC
@@ -143,6 +142,5 @@ label_top(dn, k_each)
 remove_spines(ax)
 
 plt.tight_layout()
-plt.savefig(f"{OUT_DIR}/volcano.png", dpi=300)
-plt.savefig(f"{OUT_DIR}/volcano.pdf")
-
+plt.savefig(f"{TRIMED_DIR}/volcano.png", dpi=300)
+plt.savefig(f"{TRIMED_DIR}/volcano.pdf")

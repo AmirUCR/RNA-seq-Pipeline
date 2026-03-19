@@ -12,7 +12,7 @@ readonly WORKFLOW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="$(cd "${WORKFLOW_DIR}/.." && pwd)"
 readonly BOWTIE2_PATH="$(command -v bowtie2)"
 
-readonly DATA_DIR="${PROJECT_DIR}/example_data"
+readonly DATA_DIR="${PROJECT_DIR}/data"
 
 readonly THREADS=64
 readonly ENV="rnaseq"

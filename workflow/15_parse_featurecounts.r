@@ -14,8 +14,8 @@ if (length(script_location) > 0) {
 
 # Project structure
 PROJECT_DIR <- normalizePath(file.path(script_path, ".."))
-ROOT_DIR <- file.path(PROJECT_DIR, "example_data")
-OUT_DIR <- file.path(ROOT_DIR, "output", TRIM_UNTRIM)
+RESULTS_DIR <- file.path(PROJECT_DIR, "results")
+OUT_DIR <- file.path(RESULTS_DIR, TRIM_UNTRIM)
 
 # Input files
 counts_file <- file.path(OUT_DIR, "counts.txt")

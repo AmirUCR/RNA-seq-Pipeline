@@ -17,8 +17,8 @@ if (length(script_location) > 0) {
 }
 
 PROJECT_DIR <- normalizePath(file.path(script_path, ".."))
-ROOT_DIR <- file.path(PROJECT_DIR, "example_data")
-OUT_DIR <- file.path(ROOT_DIR, "output", TRIM_UNTRIM)
+RESULTS_DIR <- file.path(PROJECT_DIR, "results")
+OUT_DIR <- file.path(RESULTS_DIR, TRIM_UNTRIM)
 
 counts_file <- file.path(OUT_DIR, "counts.csv")
 samples_file <- file.path(PROJECT_DIR, "config", "samples.tsv")
