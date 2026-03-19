@@ -87,7 +87,7 @@ SMC4KD: SRR9041565 – SRR9041566
    bash ./run_workflow.sh
    ```
 
-If you are using your own data, it is important to run the scripts one by one:
+**Note 1**: If you are using your own data, it is important to run the scripts one by one:
 ```
 chmod +x ./workflow/02_fastqc.sh
 ./workflow/02_fastqc.sh
@@ -102,6 +102,13 @@ fastp \
 --trim_front2 11 \
 ```
 to trim off your read ends however you see fit.
+
+**Note 2**: If you are using your own data, it is important to check RNA strandedness after running `workflow/08_find_rna_strand.sh`. Once this script finishes running, you will have `sample_strandedness.txt` under `results/trimmed/strand/sample_name/sample_strandedness.txt`. Inspect this file. For my data, I had:
+```
+Fraction of reads explained by "1++,1--,2+-,2-+": 0.0328
+Fraction of reads explained by "1+-,1-+,2++,2--": 0.9671
+```
+which is `RF` for hisat2, and `2` for featureCounts, for reversely stranded. The script in `workflows/01_common.sh` automatically infers this for you with a default threshold of `0.8`. So, in this case, `Fraction of reads explained by "1+-,1-+,2++,2--": 0.9671` wins and strandedness is set to `RF` and `2`. You may modify this threshold for downstream analysis after running `workflow/08_find_rna_strand.sh`. The inference function is used in `workflow/09_hisat2.sh` and `workflow/14_featurecounts.sh`.
 
 ## Example Output
 
