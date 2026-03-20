@@ -10,6 +10,8 @@ source "${SCRIPT_DIR}/01_common.sh"
 source "${HOME}/miniconda3/etc/profile.d/conda.sh"
 conda activate "${ENV}"
 
+mkdir -p "${PROJECT_DIR}/tmp"
+
 log "> 10_dedup.sh"
 
 dedup() {
@@ -22,7 +24,8 @@ dedup() {
     -M "${tag}.dup_metrics.txt" \
     -OPTICAL_DUPLICATE_PIXEL_DISTANCE 2500 \
     -CREATE_INDEX true \
-    -VALIDATION_STRINGENCY SILENT
+    -VALIDATION_STRINGENCY SILENT \
+    -TMP_DIR "${PROJECT_DIR}/tmp"
     # -REMOVE_DUPLICATES true \
 }
 
@@ -79,3 +82,5 @@ dedup_counts() {
 while IFS=$'\t' read -r sample_id condition r1 r2; do
   dedup_counts "${OUT_TRIM}/${sample_id}/trimmed"
 done < <(tail -n +2 "${SAMPLES_TSV}")
+
+rm -rf "${PROJECT_DIR}/tmp"
