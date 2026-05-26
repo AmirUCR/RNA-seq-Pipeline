@@ -4,6 +4,8 @@ End-to-end bulk RNA-seq analysis workflow used for *Plasmodium berghei* – WT v
 transcriptomics experiments. Public data obtained from [Tewari, R., et al. Cell Rep., 2020
 ](https://pmc.ncbi.nlm.nih.gov/articles/PMC7016506/)
 
+This is the same pipeline I wrote and used in a collaborative work under the supervision of Prof. [Karine Le Roch]([url](https://profiles.ucr.edu/app/home/profile/karinel))
+
 Reads must be downloaded from SRA PRJNA542367 and placed under `reads/untrimmed/` – We do this below.
 
 ## Pipeline steps:
