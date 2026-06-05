@@ -31,7 +31,7 @@ while IFS= read -r ACC || [[ -n "$ACC" ]]; do
 
     # 1. Prefetch the data
     echo "Starting prefetch..."
-    prefetch "$ACC"
+    prefetch "$ACC" --progress
 
     # 2. Extract to FASTQ (using 4 threads)
     # Using --split-3 to handle paired-end and single-end automatically
